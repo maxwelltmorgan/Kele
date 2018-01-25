@@ -37,6 +37,11 @@ class Kele
 
   def create_submission(checkpoint_id, assignment_branch, assignment_commit_link, comment)
     response = self.class.post(base_api_endpoint("checkpoint_submissions"), body: { "checkpoint_id": checkpoint_id, "assignment_branch": assignment_branch, "assignment_commit_link": assignment_commit_link, "comment": comment, "enrollment_id": self.get_me["current_enrollment"]["id"] }, headers: { "authorization" => @auth_token })
+    @submission_id = response.body["id"]
+  end
+
+  def update_checkpoint(checkpoint_id, assignment_branch, assignment_commit_link, comment, id)
+    response = self.class.put(base_api_endpoint("checkpoint_submissions/:#{id}"), body: { "checkpoint_id": checkpoint_id, "assignment_branch": assignment_branch, "assignment_commit_link": assignment_commit_link, "comment": comment, "enrollment_id": self.get_me["current_enrollment"]["id"] }, headers: { "authorization" => @auth_token })
   end
 
 private
